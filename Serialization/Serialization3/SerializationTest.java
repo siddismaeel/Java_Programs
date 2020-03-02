@@ -59,6 +59,8 @@ import java.io.*;
 			os.writeInt(address.getHomeNumber());
 			os.writeObject(address.getStreet());
 			os.writeObject(address.getCity());
+			
+			System.out.println("Address Serialized");
 		}
 		catch(Exception e)
 		{
@@ -73,7 +75,12 @@ import java.io.*;
 			int homeNumber = is.readInt();
 			String street = (String) is.readObject();
 			String city = (String) is.readObject();
-			Address address = new Address(homeNumber, street, city);
+			address = new Address(homeNumber, street, city);
+			
+			if(address == null)
+				System.out.println("Address not Deserialized");
+			else
+				System.out.println("Address Deserialized");
 		}
 		catch(Exception e)
 		{
@@ -152,6 +159,8 @@ public class SerializationTest
 		System.out.println("City---------- "+emp.getAddress().getCity());
 		
 		//Serializing 
+		boolean flag =false;
+		System.out.println("Serializing");
 		
 		try
 		{
@@ -161,16 +170,23 @@ public class SerializationTest
 			os.writeObject(emp);
 			fOut.close();
 			os.close();
+			flag = true;
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		
+		if(flag)
+			System.out.println("Serialization Completed");
+		else
+			System.out.println("Serialization not Completed");
+		
 		//Deserializing
 		
 		emp = null;
-		
+		flag = false;
+		System.out.println("Deserializing");
 		try
 		{
 			FileInputStream fIn = new FileInputStream("Employee.ser");
@@ -179,11 +195,17 @@ public class SerializationTest
 			emp = (Employee) is.readObject();
 			fIn.close();
 			is.close();
+			flag = true;
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+		
+		if(flag)
+			System.out.println("Deserialization Completed");
+		else
+			System.out.println("Deserialization not Completed");
 		
 		System.out.println("After DeSerializing ");
 		System.out.println("Employee Id--- "+emp.getEmployeeId());
